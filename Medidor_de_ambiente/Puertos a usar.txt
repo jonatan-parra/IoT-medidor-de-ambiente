@@ -1,0 +1,25 @@
+/************************************/
+/*  Pines a usar con Arduino Mega   */                          
+/************************************/
+
+
+/** Desde el sensor DHT11 **/
+ +   --> 5V
+ out --> 2
+ -   --> GND
+
+/** Desde la pantalla LCD **/
+ GND --> GND
+ VCC --> 5V
+ SDA --> 20 (SDA 20)
+ SCL --> 21 (SCL 21)
+
+/** Desde el módulo WIFI **/
+
+
+
+/** Desde el sensor de ruido **/
+
+
+
+/** Desde el sensor de luminosidad**/
