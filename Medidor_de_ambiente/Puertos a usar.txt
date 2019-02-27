@@ -19,7 +19,8 @@
 
 
 /** Desde el sensor de ruido **/
-
-
+ VCC --> 5v
+ GND --> GND
+ OUT --> A0
 
 /** Desde el sensor de luminosidad**/

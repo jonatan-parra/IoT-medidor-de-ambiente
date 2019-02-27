@@ -15,7 +15,7 @@ LiquidCrystal_I2C lcd(0x27,16,2);  // set the LCD address to 0x27 for a 16 chars
 
 
 /*** Sensor de ruido ***/
-
+int soundPin = A0;
 
 
 /*** Sensor de luminosidad ***/
@@ -29,7 +29,7 @@ void setup(){
   lcd.backlight();
 
   /*** Se inicializa el sensor de temperatura y humedad  ***/
-  Serial.begin(9600);  // inicializa comunicación serie con el DHT11
+  Serial.begin(9600);  // inicializa comunicación serie con el DHT11 y el sensor de ruido
   dht.begin();        // Comienza el sensor DHT
 
   /*** Se inicializa el módulo WIFI  ***/
@@ -45,11 +45,25 @@ void setup(){
 
 
 void loop(){
+  delay(1000); // Se esperan 1 segundo entre medidas
+  
+  /*** Medición de temperatura, humedad y sensación termica ***/
+  medir_temperatura_humedad();
 
-  // Se esperan 2 segundos entre medidas
-  delay(2000);
+  /*** Medición de ruido ***/
+  medir_ruido();
 
-  /*** Medición del DHT11 ***/
+  /*** Medición de luminosidad ***/
+  medir_luminosidad();
+
+  /** Wifi ***/
+}
+
+double medir_luminosidad(){
+  
+}
+
+double medir_temperatura_humedad(){
   float h = dht.readHumidity(); // Se lee la humedad relativa  
   float t = dht.readTemperature(); // Se lee la temperatura en grados centígrados (por defecto)
   float f = dht.readTemperature(true); // Se lee la temperatura en grados Fahreheit
@@ -71,29 +85,31 @@ void loop(){
   Serial.print(hic);  Serial.print(" *C ");
   Serial.print(hif);  Serial.println(" *F"); */
 
-
-  /*** Medición de ruido ***/
-
-
-  /*** Medición de luminosidad ***/
-
-
   /*** Mostrar en Display ***/
-  // Primer reglón
-  lcd.setCursor(0,0); 
-  lcd.print("Ruido:");
-  lcd.print("xx");
-
-  // Segundo reglón
-  lcd.setCursor(0,1); // Humedad
+  lcd.setCursor(0,1); // Humedad  // Segundo reglón
   lcd.print("H:");  
-  lcd.setCursor(2,1);
   lcd.print(h);
 
   lcd.setCursor(8,1); // Temperatura, centigrados
   lcd.print("T:"); 
-  lcd.setCursor(10,1);
   lcd.print(t);
 
-  
+  return 0;
+}
+
+
+double medir_ruido(){
+  int value = analogRead(soundPin);
+  if (value > 340){
+    Serial.println("Está hablando muy alto ");
+    Serial.println(value);
+  } else {
+    Serial.println(value);
+  }
+
+  /*** Mostrar en Display ***/
+  lcd.setCursor(0,0);  // Primer reglón
+  lcd.print("Ruido:");
+  lcd.print(value);
+  return value;
 }
